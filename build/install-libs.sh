@@ -6,7 +6,9 @@ if [ "$(command -v apt)" ]; then
   echo "Updating apt package manager..."
   sudo apt update
   echo "Installing required packages..."
-  sudo apt install glib2.0 libpoppler-glib8
+  sudo apt install libglib2.0-dev
+  sudo apt install libpoppler-glib8
+  sudo apt install libpoppler-glib-dev
 elif [ "$(command -v dnf)" ]; then
   # Update package manager and install for Fedora/CentOS
   echo "Updating dnf package manager..."
