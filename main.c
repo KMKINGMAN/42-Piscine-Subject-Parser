@@ -75,7 +75,7 @@ void process_pdf(const char *pdf_path) {
 
     char *line = strtok(text, "\n");
     while (line) {
-        printf("Processing line: %s\n", line);
+        // printf("Processing line: %s\n", line);
 
         if ((strstr(line, "C 0") || strstr(line, "C 1")) && !d) {
             sscanf(line, "C %s", name);
