@@ -23,7 +23,7 @@ The Python version uses the PyPDF2 library for PDF parsing and standard Python f
 ### Python Version:
 1. Install Python on your system if not already installed.
 2. Install the PyPDF2 library using `pip3 install PyPDF2`.
-3. Run the Python script with the path to the Piscine subject PDF file as an argument (`python main.py path/to/42_piscine_subject.pdf`).
+3. Run the Python script with the path to the Piscine subject PDF file as an argument (`python3 main.py path/to/42_piscine_subject.pdf`).
 
 ## Example Usage:
 ```bash
@@ -31,7 +31,7 @@ The Python version uses the PyPDF2 library for PDF parsing and standard Python f
 $ ./create_dirs_files en.subject.pdf
 
 # Python Version
-$ python main.py en.subject.pdf
+$ python3 main.py en.subject.pdf
 ```
 ## build the c file 
 
