@@ -12,7 +12,7 @@ elif [ "$(command -v dnf)" ]; then
   echo "Updating dnf package manager..."
   sudo dnf update
   echo "Installing required packages..."
-  sudo dnf install glib2 poppler-glib-dev
+  sudo dnf install glib2 poppler-glib-devel
 else
   echo "Error: Unsupported operating system."
   exit 1
