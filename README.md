@@ -33,15 +33,25 @@ $ ./create_dirs_files en.subject.pdf
 # Python Version
 $ python3 main.py en.subject.pdf
 ```
-## build the c file 
+## install C version
 
 ```bash
-chmod +x build.sh
-./build.sh
+$ git clone https://github.com/KMKINGMAN/42-Piscine-Subject-Parser.git ~/42-Piscine-Subject-Parser
+$ cd ~/42-Piscine-Subject-Parser
+$ chmod +x ./build/install-libs.sh
+$ sudo sh ./build/install-libs.sh
+$ chmod +x ./build/build.sh
+$ sh ./build/build.sh
+$ echo "alias 42parse='./42-Piscine-Subject-Parser/create_dirs_files'" >> ~/.zshrc && source ~/.zshrc
 ```
-## add zshrc
+
+## install Python Version version
 
 ```bash
+$ git clone https://github.com/KMKINGMAN/42-Piscine-Subject-Parser.git ~/42-Piscine-Subject-Parser
+$ cd ~/42-Piscine-Subject-Parser
+$ chmod +x ./build/python-req.sh
+$ sh ./build/python-req.sh
 echo "alias 42parse='python3 ~/42-Piscine-Subject-Parser/main.py'" >> ~/.zshrc && source ~/.zshrc
 ```
 
