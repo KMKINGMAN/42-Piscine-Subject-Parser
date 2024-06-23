@@ -19,8 +19,8 @@ jobs:
     - name: Set up dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libpoppler-glib-dev libglib2.0-dev
+        sudo apt-get install -y libpoppler-glib-dev libglib2.0-dev pkg-config
 
     - name: Build the application
       run: |
-        gcc -o pdf_processor main.c -lpoppler-glib -lglib-2.0
+        gcc -o pdf_processor main.c $(pkg-config --cflags --libs poppler-glib glib-2.0)
