@@ -24,3 +24,7 @@ jobs:
     - name: Build the application
       run: |
         gcc -o pdf_processor main.c $(pkg-config --cflags --libs poppler-glib glib-2.0)
+
+    - name: Test the application
+      run: |
+        ./pdf_processor test.pdf
