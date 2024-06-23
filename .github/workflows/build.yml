@@ -34,7 +34,10 @@ jobs:
         path: pdf_processor_ubuntu
 
   build-fedora:
-    runs-on: fedora-latest
+    runs-on: ubuntu-latest
+
+    container:
+      image: fedora:latest
 
     steps:
     - name: Checkout repository
@@ -42,8 +45,8 @@ jobs:
 
     - name: Set up dependencies on Fedora
       run: |
-        sudo dnf update -y
-        sudo dnf install -y glib2-devel poppler-glib-devel pkgconf-pkg-config
+        dnf update -y
+        dnf install -y glib2-devel poppler-glib-devel pkgconf-pkg-config gcc make
 
     - name: Build the application on Fedora
       run: |
