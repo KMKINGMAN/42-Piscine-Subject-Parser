@@ -1,4 +1,4 @@
-name: Build and Test C Application
+name: Build, Test, and Release C Application
 
 on:
   push:
@@ -7,24 +7,99 @@ on:
   pull_request:
     branches:
       - main
+  release:
+    types: [created]
 
 jobs:
-  build:
+  build-ubuntu:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up dependencies
+    - name: Set up dependencies on Ubuntu
       run: |
         sudo apt-get update
         sudo apt-get install -y libpoppler-glib-dev libglib2.0-dev pkg-config
 
-    - name: Build the application
+    - name: Build the application on Ubuntu
       run: |
-        gcc -o pdf_processor main.c $(pkg-config --cflags --libs poppler-glib glib-2.0)
+        gcc -o pdf_processor_ubuntu main.c $(pkg-config --cflags --libs poppler-glib glib-2.0)
 
-    - name: Test the application
+    - name: Upload build artifact from Ubuntu
+      uses: actions/upload-artifact@v2
+      with:
+        name: pdf_processor_ubuntu
+        path: pdf_processor_ubuntu
+
+  build-fedora:
+    runs-on: fedora-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up dependencies on Fedora
       run: |
-        ./pdf_processor test.pdf
+        sudo dnf update -y
+        sudo dnf install -y glib2-devel poppler-glib-devel pkgconf-pkg-config
+
+    - name: Build the application on Fedora
+      run: |
+        gcc -o pdf_processor_fedora main.c $(pkg-config --cflags --libs poppler-glib glib-2.0)
+
+    - name: Upload build artifact from Fedora
+      uses: actions/upload-artifact@v2
+      with:
+        name: pdf_processor_fedora
+        path: pdf_processor_fedora
+
+  release:
+    needs: [build-ubuntu, build-fedora]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Download build artifact from Ubuntu
+      uses: actions/download-artifact@v2
+      with:
+        name: pdf_processor_ubuntu
+
+    - name: Download build artifact from Fedora
+      uses: actions/download-artifact@v2
+      with:
+        name: pdf_processor_fedora
+
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name }}
+        release_name: Release ${{ github.ref_name }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Ubuntu Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./pdf_processor_ubuntu
+        asset_name: pdf_processor_ubuntu
+        asset_content_type: application/octet-stream
+
+    - name: Upload Fedora Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./pdf_processor_fedora
+        asset_name: pdf_processor_fedora
+        asset_content_type: application/octet-stream
