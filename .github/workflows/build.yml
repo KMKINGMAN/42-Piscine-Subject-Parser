@@ -1,0 +1,26 @@
+name: Build and Test C Application
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libpoppler-glib-dev libglib2.0-dev
+
+    - name: Build the application
+      run: |
+        gcc -o pdf_processor main.c -lpoppler-glib -lglib-2.0
